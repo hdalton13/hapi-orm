@@ -4,10 +4,10 @@
 const knex = require("knex")({
   client: "pg",
   connection: {
-    host: 'pg.cse.taylor.edu',
-    user: 'heather_dalton',
-    password: 'kivaxida',
-    database: 'heather_dalton'
+    host: "pg.cse.taylor.edu",
+    user: "heather_dalton",
+    password: "kivaxida",
+    database: "heather_dalton",
   },
 });
 
@@ -50,27 +50,21 @@ const init = async () => {
       path: "/patients",
       handler: (request, h) => Patient.query(),
     },
-//Retrieve (5.2)
+    //Retrieve (5.2)
     {
       method: "GET",
       path: "/companies",
       handler: (request, h) => {
-        return knex
-            .select() //this means select * from comany and vaccine
-            .from('company', 'vaccine')
-      }
+        return Company.query().withGraphFetched("vaccines");
+      },
     },
     {
       method: "GET",
       path: "/patients/{id}",
       handler: (request, h) => {
         const id_Key = request.params.id;
-        return knex
-            .select()
-            .from('patient')
-            .where('id',`${id_Key}`)
-            .first();
-      }
+        return Patient.query().where("id", id_Key).first();
+      },
     },
     /*{/vaccines
     //Does not work At all. Cant get both the vaccine name and the company name consecutively
@@ -183,7 +177,7 @@ const init = async () => {
     }
 
      */
-  ]);//end of server.route
+  ]); //end of server.route
 
   console.log("Server listening on", server.info.uri);
   await server.start();

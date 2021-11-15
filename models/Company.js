@@ -1,24 +1,22 @@
 //Heather Dalton
 //11/12/2021
 const { Model } = require("objection");
-const {Vaccine} = require("./Vaccine.js")
+const Vaccine = require("./Vaccine");
 
 class Company extends Model {
-    static tableName = 'company';
+  static tableName = "company";
 
-    static relationMappings = {
-        vaccine:{
-            relation: Model.HasManyRelation,
-            modelClass: Vaccine,
-            join: {
-                from: 'company.company_id',
-                to: 'vaccine.company_id'
-            }//end join
-        }//end vaccine
-    };//end relation
-
-
-}//end class
+  static relationMappings = {
+    vaccines: {
+      relation: Model.HasManyRelation,
+      modelClass: Vaccine,
+      join: {
+        from: "company.id",
+        to: "vaccine.company_id",
+      }, //end join
+    }, //end vaccine
+  }; //end relation
+} //end class
 module.exports = Company;
 
 //Company has a HasManyRelation to Vaccine
