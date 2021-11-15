@@ -108,24 +108,17 @@ const init = async () => {
       handler: async (request, h) => {
         const rowsUpdated = await Patient.query()
             .update(request.payload)
-            .where('id', request.params.patient_id);
+            .where('id', request.params.id);
         return {updated: rowsUpdated};
       }
     },    //end entire method
 
-
-    /*//Delete (5.4)
+//Delete (5.4)
     {
       method: 'DELETE',
       path: '/patients/{pid}/vaccines/{vid}',
       config: {
         description: 'Delete a combination',
-        validate:{
-          params:{
-            patients_id: Joi.number().integer.min(0).required,
-            vaccine_id: Joi.number().integer.min(0).required
-          }
-        }
       },
       handler: async (request, h) => {
         const rowsDeleted = await knex()
@@ -138,8 +131,6 @@ const init = async () => {
         else { return Boom.notFound(`Query returned ${rowsDeleted} rows`) };
       }
     }
-
-     */
   ]); //end of server.route
 
   console.log("Server listening on", server.info.uri);

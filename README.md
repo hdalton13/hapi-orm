@@ -12,10 +12,9 @@ Have Done and Checked with Postman:
 * Retrieve: /companies
 * Retrieve: /patients
 * Retrieve: /patients/{id}
-
+* Update: /patients/{id}
 
 Need to Complete:
 * Create: /patient/{pid}/vaccines/{vid}
 * Retrieve: /vaccines
-* Update: /patients/{id}
 * Delete: /patient/{pid}/vaccines/{vid}
