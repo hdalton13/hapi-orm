@@ -66,81 +66,44 @@ const init = async () => {
         return Patient.query().where("id", id_Key).first();
       },
     },
-    /*{/vaccines
-    //Does not work At all. Cant get both the vaccine name and the company name consecutively
-    //been trying to do a join but every variation doesn't work
+    {//vaccines
       method: "GET",
       path: "/vaccines",
       handler: (request, h) => {
-        return knex()
-            .select() //this means select * from company and vaccine
-            .from('vaccine')
-            .crossJoin('company');
-
-
-        //return knex('company')
-            //.join('vaccine', 'company.id', '=', 'vaccine.id')
-            //.select() //this means select * from company and vaccine
-
-        // return knex()
-            //.select() //this means select * from company and vaccine
-            //.from('company')
-            //.leftJoin('vaccine', 'company.id','vaccine.company_id')
-
-        //'company.name', 'vaccine.name'
+        return Vaccine.query().withGraphFetched("companies");
       }
-    }, */
+    }, /**/
 
-    /*//Create (5.1)
+   //Create (5.1)
     {
       method:"POST",
       path: "/patients",
       config: {
         description: 'Create patient',
-        validate:{
-          payload:{
-            first_name: Joi.string().min(1).required(),
-            last_name: Joi.string().min(1).required(),
-            phone: Joi.string().length(10).required()
-          }
-        }
       },
       handler: (request, h) => {
         return Patient.query().insert(request.payload);
       }
 
-    }/*,
+    },
     {
       method:"POST",
-      path: "/patients/{pid}/vacces/{vid}",
+      path: "/patients/{pid}/vaccines/{vid}",
       config: {
         description: 'Create patient',
-        validate:{
-          payload:{
-            vaccine_id: `${vid}`,
-            patient_id: `${pid}`
-          }
-        }
+      },
+      handler: (request, h)=> {
+        const pid_Key = request.params.pid;
+        const vid_Key = request.params.vid;
+        return Vaccination.query().insert(request.payload)
       }
     },
-
-     */
-    /* //Update (5.3)
+//Update (5.3)
     {
       method:"PUT",
       path: '/patients/{id}',
       config:{
         description:'Replace the patient information',
-        validate: {
-          params:{
-            patient_id: Joi.number().integer().min(0).required
-          },
-          payload:{
-            first_name: Joi.string().min(1).required(),
-            last_name: Joi.string().min(1).required(),
-            phone: Joi.string().length(10).required()
-          }
-        }//end validate
       },//end config
       handler: async (request, h) => {
         const rowsUpdated = await Patient.query()
@@ -150,7 +113,7 @@ const init = async () => {
       }
     },    //end entire method
 
-     */
+
     /*//Delete (5.4)
     {
       method: 'DELETE',

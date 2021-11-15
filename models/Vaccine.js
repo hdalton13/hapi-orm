@@ -2,6 +2,8 @@
 //11/12/2021
 const { Model } = require("objection");
 const { Patient } = require("./Patient.js");
+const { Company } = require("./Company.js");
+
 
 class Vaccine extends Model {
   static tableName = "vaccine";
@@ -19,6 +21,15 @@ class Vaccine extends Model {
         to: "patient.patient_id",
       }, //end join
     }, //category end
+    company: {
+      relation: Model.HasManyRelation,
+      modelClass: Company,
+      join: {
+        from: "vaccine.company_id",
+        to: "company.id",
+      }, //end join
+    },
   }; //end relation
+
 } //end class
 module.exports = Vaccine;
