@@ -1,7 +1,6 @@
 //Heather Dalton
 //11/12/2021
 const { Model } = require("objection");
-const Vaccine = require("./Vaccine");
 
 class Company extends Model {
   static tableName = "company";
@@ -9,7 +8,7 @@ class Company extends Model {
   static relationMappings = {
     vaccines: {
       relation: Model.HasManyRelation,
-      modelClass: Vaccine,
+      modelClass: require("./Vaccine"),
       join: {
         from: "company.id",
         to: "vaccine.company_id",
@@ -17,6 +16,7 @@ class Company extends Model {
     }, //end vaccine
   }; //end relation
 } //end class
+
 module.exports = Company;
 
 //Company has a HasManyRelation to Vaccine
