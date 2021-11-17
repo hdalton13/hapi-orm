@@ -1,6 +1,5 @@
 // Configure Knex.
 //Heather Dalton
-//11/12/2021
 const knex = require("knex")({
   client: "pg",
   connection: {
@@ -66,14 +65,13 @@ const init = async () => {
         return Patient.query().where("id", id_Key).first();
       },
     },
-    {//vaccines
+    {
       method: "GET",
       path: "/vaccines",
       handler: (request, h) => {
         return Vaccine.query().withGraphFetched("companies");
       }
-    }, /**/
-
+    },
    //Create (5.1)
     {
       method:"POST",
@@ -86,18 +84,26 @@ const init = async () => {
       }
 
     },
-    {
+    { //Needs working on: Don't know
       method:"POST",
       path: "/patients/{pid}/vaccines/{vid}",
       config: {
         description: 'Create patient',
+          /*validate:{
+            payload:{
+              patient:'pid',
+              vaccine: 'vid'
+
+            }
+          }*/ //Idea is that I have to do something with the payload.
+        //need to check to see what request.payload changes with 2 params
       },
       handler: (request, h)=> {
         const pid_Key = request.params.pid;
         const vid_Key = request.params.vid;
         return Vaccination.query().insert(request.payload)
       }
-    },
+    }, //INSERT INTO vaccination (vaccine_id, patient_id) VALUES (1, 1);
 //Update (5.3)
     {
       method:"PUT",
@@ -114,7 +120,7 @@ const init = async () => {
     },    //end entire method
 
 //Delete (5.4)
-    {
+    {//Needs working on; Don't know how to start
       method: 'DELETE',
       path: '/patients/{pid}/vaccines/{vid}',
       config: {
