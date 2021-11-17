@@ -84,29 +84,22 @@ const init = async () => {
       }
 
     },
-    { //Needs working on: Don't know
+    { //Can't Print the statusCode
       method:"POST",
       path: "/patients/{pid}/vaccines/{vid}",
       config: {
         description: 'Create patient',
-          /*validate:{
-            payload:{
-              patient:'pid',
-              vaccine: 'vid'
-
-            }
-          }*/ //Idea is that I have to do something with the payload.
-        //need to check to see what request.payload changes with 2 params
       },
-      handler: (request, h)=> {
-        const pid_Key = request.params.pid;
-        const vid_Key = request.params.vid;
-        return Vaccination.query().insert(request.payload)
+      handler: async (request, response, h) => {
+        const p = await Patient.query().findById(request.params.pid);
+        const v = await Vaccine.query().findById(request.params.vid);
+        await p.$relatedQuery('vaccination').relate(v);
+        return "Status 200" //Boom.boomify(message);
       }
-    }, //INSERT INTO vaccination (vaccine_id, patient_id) VALUES (1, 1);
+    },
 //Update (5.3)
     {
-      method:"PUT",
+      method:"PATCH",
       path: '/patients/{id}',
       config:{
         description:'Replace the patient information',
@@ -120,24 +113,29 @@ const init = async () => {
     },    //end entire method
 
 //Delete (5.4)
-    {//Needs working on; Don't know how to start
+    /*{//Needs working on; Don't know how to start
       method: 'DELETE',
       path: '/patients/{pid}/vaccines/{vid}',
       config: {
         description: 'Delete a combination',
       },
       handler: async (request, h) => {
-        const rowsDeleted = await knex()
-            .select('patient_id', 'vaccine_id')
-            .from('patient', 'vaccine')
+        /*const p = await Patient.query().findById(request.params.pid);
+        const v = await Vaccine.query().findById(request.params.vid);
+        ;
+        const rowsDeleted = await p
+            .$relatedQuery('vaccination')
+            .relate(v)
             .delete()
             .where('patient_id', request.params.pid)
             .andWhere('vaccine_id', request.params.vid);
         if (rowsDeleted == 1) {return {deleted: rowsDeleted}}
         else { return Boom.notFound(`Query returned ${rowsDeleted} rows`) };
       }
-    }
+    }*/
   ]); //end of server.route
+
+
 
   console.log("Server listening on", server.info.uri);
   await server.start();

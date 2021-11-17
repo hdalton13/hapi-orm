@@ -6,16 +6,16 @@ class Patient extends Model {
   static tableName = "patient";
 
   static relationMappings = {
-    vaccine: {
+    vaccination: {
       relation: Model.HasOneThroughRelation,
       modelClass: require("./Vaccine"),
       join: {
-        from: "patient.patient_id",
+        from: "patient.id",
         through: {
           from: "vaccination.patient_id",
           to: "vaccination.vaccine_id",
         }, //end through
-        to: "vaccine.vaccine_id",
+        to: "vaccine.id",
       }, //end join
     }, //vaccine end
   }; // end relation

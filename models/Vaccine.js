@@ -7,16 +7,16 @@ class Vaccine extends Model {
 
   static get relationMappings() {
     return {
-      patient: {
+      vaccination: {
         relation: Model.HasOneThroughRelation,
         modelClass: require("./Patient"),
         join: {
-          from: "vaccine.vaccine_id",
+          from: "vaccine.id",
           through: {
             from: "vaccination.vaccine_id",
             to: "vaccination.patient_id",
           }, //end through
-          to: "patient.patient_id",
+          to: "patient.id",
         }, //end join
       }, //category end
       companies: {

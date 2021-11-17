@@ -16,5 +16,5 @@ Have Done and Checked with Postman:
 
 
 Need to Complete:
-* Create: /patient/{pid}/vaccines/{vid}
+* Create: /patient/{pid}/vaccines/{vid}: error reading
 * Delete: /patient/{pid}/vaccines/{vid}
